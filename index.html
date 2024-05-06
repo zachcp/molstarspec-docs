@@ -191,7 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The following snippet shows how to instaniate the builder and point to some URL from which structure data shall be downloaded. The returned content is parsed as mmCIF. The first assembly is loaded. A component representing everything is created, which ultimately gets visualized using the default cartoon representation.</p>
 <p>.getState() can be used to access the content of the builder. JSON is emitted (powered by Pydantic’s .dict() method).</p>
 <p>A minimal example looks like this:</p>
-<div id="5c3b4e4f" class="cell" data-execution_count="1">
+<div id="687230d0" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> molviewspec <span class="im">as</span> mvs</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># call `create_builder()` to create an instance of the builder</span></span>
@@ -210,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/basic.mvsj">Basic</a></p>
     <div id="app-./mvsj_files/basic.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/basic.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/basic.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/basic.mvsj", "mvsj");    });
     </script>
     
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="minimal-visualize-a-structure-as-cartoon" class="level2">
 <h2 class="anchored" data-anchor-id="minimal-visualize-a-structure-as-cartoon">Minimal: Visualize a Structure as Cartoon</h2>
 <p>A minimal example that visualizes 1cbs in cartoon representation.</p>
-<div id="ec4e13ed" class="cell" data-execution_count="2">
+<div id="d5371a55" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    builder.download(url<span class="op">=</span><span class="st">"https://files.wwpdb.org/download/1cbs.cif"</span>)</span>
@@ -262,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/minimal.mvsj">Basic</a></p>
     <div id="app-./mvsj_files/minimal.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/minimal.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/minimal.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/minimal.mvsj", "mvsj");    });
     </script>
     
@@ -275,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>"all" | "polymer" | "protein" | "nucleic" | "branched" | "ligand" | "ion" | "water"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Selectors may also be of type ComponentExpression, which encompasses a powerful set of mmCIF identifiers that can be used to address individual chains, residues, or atoms. Promonient options are label_asym_id to identify chains, label_seq_id to specify residues, or label_atom_id to select individual atoms by their name (CA, N, O, C, CB and so on).</p>
 <p>Consecutive residues of a chain can be selected using dedicated range operators such as beg_label_seq_id and end_label_seq_id. Note that the end index is inclusive.</p>
-<div id="7b0973d2" class="cell" data-execution_count="3">
+<div id="aac31db8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>structure <span class="op">=</span> builder.download(url<span class="op">=</span><span class="st">"https://files.wwpdb.org/download/1c0a.cif"</span>).parse(<span class="bu">format</span><span class="op">=</span><span class="st">"mmcif"</span>).assembly_structure()</span>
@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/selectors.mvsj">Selectors</a></p>
     <div id="app-./mvsj_files/selectors.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/selectors.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/selectors.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/selectors.mvsj", "mvsj");    });
     </script>
     
@@ -311,7 +311,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generate-symmetry-mates-using-distance-threshold" class="level2">
 <h2 class="anchored" data-anchor-id="generate-symmetry-mates-using-distance-threshold">Generate Symmetry Mates using Distance Threshold</h2>
 <p>Add symmetry mates within a distance threshold.</p>
-<div id="2c9b4a79" class="cell" data-execution_count="4">
+<div id="0266c0ac" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    builder.download(url<span class="op">=</span><span class="st">"https://files.wwpdb.org/download/4hhb.cif"</span>)</span>
@@ -327,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/symmetry.mvsj">symmetry</a></p>
     <div id="app-./mvsj_files/symmetry.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/symmetry.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/symmetry.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/symmetry.mvsj", "mvsj");    });
     </script>
     
@@ -335,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generate-symmetry-mates-using-miller-indices" class="level2">
 <h2 class="anchored" data-anchor-id="generate-symmetry-mates-using-miller-indices">Generate Symmetry Mates using Miller Indices</h2>
 <p>Create symmetry mates by specifying Miller indices.</p>
-<div id="4f10e440" class="cell" data-execution_count="5">
+<div id="91cfb99f" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    builder.download(url<span class="op">=</span><span class="st">"https://files.wwpdb.org/download/4hhb.cif"</span>)</span>
@@ -352,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/symmetry_miller.mvsj">symmetry miller</a></p>
     <div id="app-./mvsj_files/symmetry_miller.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/symmetry_miller.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/symmetry_miller.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/symmetry_miller.mvsj", "mvsj");    });
     </script>
     
@@ -360,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="transformsuperimpose-2-structures" class="level2">
 <h2 class="anchored" data-anchor-id="transformsuperimpose-2-structures">Transform/Superimpose 2 Structures</h2>
 <p>Superimpose 1oj6 and 5mjd by transforming the latter.</p>
-<div id="7454ee92" class="cell" data-execution_count="6">
+<div id="464cb764" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>structure1 <span class="op">=</span> (</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    builder.download(url<span class="op">=</span><span class="st">"https://files.wwpdb.org/download/1oj6.cif"</span>)</span>
@@ -392,14 +392,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/transform_superpose.mvsj">symmetry transform_superpose</a></p>
     <div id="app-./mvsj_files/transform_superpose.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/transform_superpose.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/transform_superpose.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/transform_superpose.mvsj", "mvsj");    });
     </script>
     
 </section>
 <section id="basics-from-the-molspec-site" class="level2">
 <h2 class="anchored" data-anchor-id="basics-from-the-molspec-site">Basics from the Molspec Site</h2>
-<div id="6740ef8f" class="cell" data-execution_count="7">
+<div id="311da995" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>structure <span class="op">=</span> (builder</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    .download(url<span class="op">=</span><span class="st">"https://www.ebi.ac.uk/pdbe/entry-files/download/1cbs_updated.cif"</span>)</span>
@@ -415,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/molspec_basics.mvsj">Basic</a></p>
     <div id="app-./mvsj_files/molspec_basics.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/molspec_basics.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/molspec_basics.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/molspec_basics.mvsj", "mvsj");    });
     </script>
     
@@ -423,7 +423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="labels" class="level2">
 <h2 class="anchored" data-anchor-id="labels">Labels</h2>
 <p>Labels: A molecule (PDB ID 1lap) visualization with a custom labels.</p>
-<div id="e31dab72" class="cell" data-execution_count="8">
+<div id="d3741061" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>structure <span class="op">=</span> (</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    builder.download(</span>
@@ -453,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/molspec_labels.mvsj">Basic</a></p>
     <div id="app-./mvsj_files/molspec_labels.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/molspec_labels.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/molspec_labels.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/molspec_labels.mvsj", "mvsj");    });
     </script>
     
@@ -461,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="components" class="level2">
 <h2 class="anchored" data-anchor-id="components">Components</h2>
 <p>An aaRS (PDB ID 1c0a) visualization with different selections. Protein in orange, RNA in blue, ligand in green, and active site residues colored red.</p>
-<div id="1ec4c795" class="cell" data-execution_count="9">
+<div id="0ea1b921" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>builder <span class="op">=</span> mvs.create_builder()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>structure <span class="op">=</span> (</span>
@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="mvsj_files/molspec_components.mvsj">Basic</a></p>
     <div id="app-./mvsj_files/molspec_components.mvsj" class="molstar-app"></div>
     <script type="text/javascript">
-    molstar.Viewer.create("app-./mvsj_files/molspec_components.mvsj", {"layoutShowLog":false,"emdbProvider":"rcsb","viewportShowAnimation":true,"layoutIsExpanded":false,"layoutShowSequence":false,"pdbProvider":"rcsb","viewportShowSelectionMode":false,"layoutShowControls":false,"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutShowRemoteState":false}).then(viewer => {
+    molstar.Viewer.create("app-./mvsj_files/molspec_components.mvsj", {"viewportShowExpand":true,"layoutShowLeftPanel":true,"layoutIsExpanded":false,"emdbProvider":"rcsb","pdbProvider":"rcsb","layoutShowSequence":false,"viewportShowSelectionMode":false,"viewportShowAnimation":true,"layoutShowRemoteState":false,"layoutShowLog":false,"layoutShowControls":false}).then(viewer => {
     viewer.loadMvsFromUrl(url="./mvsj_files/molspec_components.mvsj", "mvsj");    });
     </script>
     
@@ -606,7 +606,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/zachcp\.github\.io\/molstarspec-docs\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
