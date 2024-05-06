@@ -225,9 +225,7 @@ builder.save_state(destination="mvsj_files/transform_superpose.mvsj")
 
 
 
-# Examples from Molspec Site
-
-## Basics
+## Basics from the Molspec Site
 
 ```{python}
 builder = mvs.create_builder()
