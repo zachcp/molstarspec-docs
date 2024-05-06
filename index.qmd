@@ -1,0 +1,337 @@
+---
+title: "Molstar-docs"
+---
+
+```sh
+!pip install molviewspec
+```
+
+
+## Builder Basics
+
+You can define scenes by importing the Root class from molviewspec, which provides a step-wise builder that allows you to define even complex scenes in a simple fashion.
+
+The following snippet shows how to instaniate the builder and point to some URL from which structure data shall be downloaded. The returned content is parsed as mmCIF. The first assembly is loaded. A component representing everything is created, which ultimately gets visualized using the default cartoon representation.
+
+.getState() can be used to access the content of the builder. JSON is emitted (powered by Pydantic's .dict() method).
+
+A minimal example looks like this:
+
+```{python}
+import molviewspec as mvs
+
+# call `create_builder()` to create an instance of the builder
+builder = mvs.create_builder()
+# at each step, auto-complete will suggest possible actions depending on the current state of the builder
+(
+    builder.download(url="https://files.wwpdb.org/download/1cbs.cif")
+    .parse(format="mmcif")
+    .assembly_structure(assembly_id="1")
+    .component()
+    .representation()
+)
+
+builder.save_state(destination="mvsj_files/basic.mvsj")
+
+```
+
+[Basic](mvsj_files/basic.mvsj)
+{{< mol-json ./mvsj_files/basic.mvsj >}}
+
+
+## Common Actions
+
+The common workflow for the creation of a scene is to specify:
+
+- Download: The URL from which structure data will be loaded
+- Parse: The file format to allow parsing
+- Structure: Which biological assembly to visualize
+- Component: Select a set of chains, residues etc
+
+The created components can be used to:
+
+- Representation: Represent all polymer chains by cartoon
+- Focus: Zoom in on a selection
+- Label: Add a text label next to a selection
+- Tooltip: Show a custom tooltip when hovering over this selection
+
+TODO: Some figure would be nice here. Potentially the same as in the pub.
+
+The Root class also offers a variety of global settings and functions to export and save the created view specification.
+
+Global properties are:
+
+- Camera: Position the camera and its orientation relative to the scene
+- Canvas: Change e.g. background color of the canvas
+- GenericVisuals: Add primitives such as spheres and lines
+- Root actions include:
+
+- get_state(): Retrieve JSON that describes the whole view specification
+- save_state(): Persist the view specification as local file
+
+TODO: All of these could link to later sections with more detail, like a ToC
+
+
+## Minimal: Visualize a Structure as Cartoon
+
+A minimal example that visualizes 1cbs in cartoon representation.
+
+```{python}
+builder = mvs.create_builder()
+(
+    builder.download(url="https://files.wwpdb.org/download/1cbs.cif")
+    .parse(format="mmcif")
+    .assembly_structure(assembly_id="1")
+    .component()
+    .representation()
+)
+
+builder.save_state(destination="mvsj_files/minimal.mvsj")
+```
+
+[Basic](mvsj_files/minimal.mvsj)
+{{< mol-json ./mvsj_files/minimal.mvsj >}}
+
+
+## Using Selectors to Create Components
+
+Aminoacyl-tRNA synthetases (aaRS) load tRNA molecules with their proper amino acid. All class II aaRSs feature two crucial arginine residues in their active site. One class II aaRS that is specific to tRNAASP and asparatic acid is 1c0a.
+
+This examples visualizes protein chains as well as the tRNA molecule from 1c0a as cartoon and depicts the activated Asp-AMP (AMO) ligand in ball-and-stick representation. Additionally, both arginines are emphasized in red ball-and-stick representation.
+
+To achieve this, the Component operator is used, which expects a selector. Selectors can e.g. be coarse-grained, hard-coded selectors:
+
+```txt
+"all" | "polymer" | "protein" | "nucleic" | "branched" | "ligand" | "ion" | "water"
+```
+
+Selectors may also be of type ComponentExpression, which encompasses a powerful set of mmCIF identifiers that can be used to address individual chains, residues, or atoms. Promonient options are label_asym_id to identify chains, label_seq_id to specify residues, or label_atom_id to select individual atoms by their name (CA, N, O, C, CB and so on).
+
+Consecutive residues of a chain can be selected using dedicated range operators such as beg_label_seq_id and end_label_seq_id. Note that the end index is inclusive.
+
+
+```{python}
+builder = mvs.create_builder()
+
+structure = builder.download(url="https://files.wwpdb.org/download/1c0a.cif").parse(format="mmcif").assembly_structure()
+
+# represent protein & RNA as cartoon
+structure.component(selector="protein").representation().color(color="#e19039")  # protein in orange
+structure.component(selector="nucleic").representation().color(color="#4b7fcc")  # RNA in blue
+# represent ligand in active site as ball-and-stick
+ligand = structure.component(selector=mvs.ComponentExpression(label_asym_id='E'))
+ligand.representation(type="ball_and_stick").color(color="#229954")  # ligand in green
+
+# represent 2 crucial arginine residues as red ball-and-stick and label with custom text
+arg_b_217 = structure.component(selector=mvs.ComponentExpression(label_asym_id="B", label_seq_id=217))
+arg_b_217.representation(type="ball_and_stick").color(color="#ff0000")
+arg_b_217.label(text="aaRS Class II Signature")
+arg_b_537 = structure.component(selector=mvs.ComponentExpression(label_asym_id="B", label_seq_id=537))
+arg_b_537.representation(type="ball_and_stick").color(color="#ff0000")
+arg_b_537.label(text="aaRS Class II Signature")
+
+# position camera to zoom in on ligand and signature residues
+focus = structure.component(selector=[mvs.ComponentExpression(label_asym_id='E'), mvs.ComponentExpression(label_asym_id="B", label_seq_id=217), mvs.ComponentExpression(label_asym_id="B", label_seq_id=537)]).focus()
+
+builder.save_state(destination="mvsj_files/selectors.mvsj")
+```
+
+[Selectors](mvsj_files/selectors.mvsj)
+{{< mol-json ./mvsj_files/selectors.mvsj >}}
+
+
+## Generate Symmetry Mates using Distance Threshold
+
+Add symmetry mates within a distance threshold.
+
+
+```{python}
+builder = mvs.create_builder()
+(
+    builder.download(url="https://files.wwpdb.org/download/4hhb.cif")
+    .parse(format="mmcif")
+    .symmetry_mates_structure(radius=5.0)
+    .component()
+    .representation()
+    .color(color="#1b9e77")
+)
+
+builder.save_state(destination="mvsj_files/symmetry.mvsj")
+```
+
+[symmetry](mvsj_files/symmetry.mvsj)
+{{< mol-json ./mvsj_files/symmetry.mvsj >}}
+
+
+## Generate Symmetry Mates using Miller Indices
+
+Create symmetry mates by specifying Miller indices.
+
+```{python}
+builder = mvs.create_builder()
+(
+    builder.download(url="https://files.wwpdb.org/download/4hhb.cif")
+    .parse(format="mmcif")
+    .symmetry_structure(ijk_min=(-1, -1, -1), ijk_max=(1, 1, 1))
+    .component()
+    .representation()
+    .color(color='#1b9e77')
+)
+
+
+builder.save_state(destination="mvsj_files/symmetry_miller.mvsj")
+```
+
+[symmetry miller](mvsj_files/symmetry_miller.mvsj)
+{{< mol-json ./mvsj_files/symmetry_miller.mvsj >}}
+
+
+## Transform/Superimpose 2 Structures
+
+Superimpose 1oj6 and 5mjd by transforming the latter.
+
+```{python}
+builder = mvs.create_builder()
+structure1 = (
+    builder.download(url="https://files.wwpdb.org/download/1oj6.cif")
+    .parse(format="mmcif")
+    .assembly_structure()
+)
+# 1st structure colored in orange
+structure1.component(selector='polymer').representation(type='cartoon').color(color='#e19039')
+structure1.component(selector='ligand').representation(type='ball_and_stick').color(color='#eec190')
+
+structure2 = (
+    builder.download(url="https://files.wwpdb.org/download/5mjd.cif")
+    .parse(format="mmcif")
+    .assembly_structure()
+    # move these coordinates to align both structures
+    .transform(
+        rotation=[-0.39652203922082313, 0.918022802798312, 0.002099036562725462, 0.9068461182538327, 0.39133670281585825, 0.1564790811487865, 0.14282993460796656, 0.06395090751149791, -0.9876790426086504],
+        translation=[-17.636085896690037, 7.970761314734439, 88.54613248028247]
+    )
+)
+# 2nd structure colored in blue
+structure2.component(selector='polymer').representation(type='cartoon').color(color='#4b7fcc')
+structure2.component(selector='ligand').representation(type='ball_and_stick').color(color='#9cb8e3')
+
+
+
+builder.save_state(destination="mvsj_files/transform_superpose.mvsj")
+```
+
+[symmetry transform_superpose](mvsj_files/transform_superpose.mvsj)
+{{< mol-json ./mvsj_files/transform_superpose.mvsj >}}
+
+
+
+# Examples from Molspec Site
+
+## Basics
+
+```{python}
+builder = mvs.create_builder()
+structure = (builder
+    .download(url="https://www.ebi.ac.uk/pdbe/entry-files/download/1cbs_updated.cif")
+    .parse(format="mmcif")
+    .model_structure()
+    .component()
+    .representation()
+    .color(color="blue")
+)
+
+builder.save_state(destination="mvsj_files/molspec_basics.mvsj")
+```
+
+
+[Basic](mvsj_files/molspec_basics.mvsj)
+{{< mol-json ./mvsj_files/molspec_basics.mvsj >}}
+
+## Labels
+
+Labels:
+A molecule (PDB ID 1lap) visualization with a custom labels.
+
+```{python}
+builder = mvs.create_builder()
+structure = (
+    builder.download(
+        url="https://www.ebi.ac.uk/pdbe/entry-files/download/1lap_updated.cif"
+    )
+    .parse(format="mmcif")
+    .model_structure()
+)
+
+# Reference a residue of interest
+residue = mvs.ComponentExpression(label_asym_id="A", label_seq_id=120)
+
+# Represent everything as cartoon & color the residue red
+whole = structure.component()
+(
+    whole.representation().color(
+        color="red",
+        selector=mvs.ComponentExpression(label_asym_id="A", label_seq_id=120),
+    )
+)
+
+# label the residues with custom text & focus it
+(structure.component(selector=residue).label(text="ALA 120 A: My Label").focus())
+
+builder.save_state(destination="mvsj_files/molspec_labels.mvsj")
+```
+
+
+[Basic](mvsj_files/molspec_labels.mvsj)
+{{< mol-json ./mvsj_files/molspec_labels.mvsj >}}
+
+
+## Components
+
+An aaRS (PDB ID 1c0a) visualization with different selections. Protein in orange, RNA in blue, ligand in green, and active site residues colored red.
+
+```{python}
+builder = mvs.create_builder()
+
+structure = (
+    builder.download(
+        url="https://www.ebi.ac.uk/pdbe/entry-files/download/1c0a_updated.cif"
+    )
+    .parse(format="mmcif")
+    .assembly_structure()
+)
+
+# represent protein & RNA as cartoon
+(structure.component(selector="protein").representation().color(color="#e19039"))
+(structure.component(selector="nucleic").representation().color(color="#4b7fcc"))
+# represent ligand in active site as ball-and-stick
+ligand = structure.component(selector=mvs.ComponentExpression(label_asym_id="E"))
+ligand.representation(type="ball_and_stick").color(color="#229954")
+
+# represent 2 crucial arginine residues as red ball-and-stick and label with custom text
+arg_b_217 = structure.component(
+    selector=mvs.ComponentExpression(label_asym_id="B", label_seq_id=217)
+)
+arg_b_217.representation(type="ball_and_stick").color(color="#ff0000")
+arg_b_217.label(text="aaRS Class II Signature")
+arg_b_537 = structure.component(
+    selector=mvs.ComponentExpression(label_asym_id="B", label_seq_id=537)
+)
+arg_b_537.representation(type="ball_and_stick").color(color="#ff0000")
+arg_b_537.label(text="aaRS Class II Signature")
+
+# position camera to zoom in on ligand and signature residues
+focus = structure.component(
+    selector=[
+        mvs.ComponentExpression(label_asym_id="E"),
+        mvs.ComponentExpression(label_asym_id="B", label_seq_id=217),
+        mvs.ComponentExpression(label_asym_id="B", label_seq_id=537),
+    ]
+).focus()
+
+builder.save_state(destination="mvsj_files/molspec_components.mvsj")
+```
+
+
+[Basic](mvsj_files/molspec_components.mvsj)
+{{< mol-json ./mvsj_files/molspec_components.mvsj >}}
+
