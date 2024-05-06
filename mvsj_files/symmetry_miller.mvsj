@@ -1,0 +1,68 @@
+{
+  "root": {
+    "kind": "root",
+    "children": [
+      {
+        "kind": "download",
+        "params": {
+          "url": "https://files.wwpdb.org/download/4hhb.cif"
+        },
+        "children": [
+          {
+            "kind": "parse",
+            "params": {
+              "format": "mmcif"
+            },
+            "children": [
+              {
+                "kind": "structure",
+                "params": {
+                  "type": "symmetry",
+                  "ijk_min": [
+                    -1,
+                    -1,
+                    -1
+                  ],
+                  "ijk_max": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "children": [
+                  {
+                    "kind": "component",
+                    "params": {
+                      "selector": "all"
+                    },
+                    "children": [
+                      {
+                        "kind": "representation",
+                        "params": {
+                          "type": "cartoon"
+                        },
+                        "children": [
+                          {
+                            "kind": "color",
+                            "params": {
+                              "selector": "all",
+                              "color": "#1b9e77"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "version": "1.0",
+    "timestamp": "2024-05-06T16:48:38.245749+00:00"
+  }
+}
